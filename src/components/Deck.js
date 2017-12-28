@@ -6,8 +6,15 @@ const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
 const SWIPE_OUT_DURATION = 250;
 
 class Deck extends Component {
+    static defaultProps = {
+        onSwipeRight: () => {},
+        onSwipeLeft: () => {}
+    }
+
     constructor(props) {
         super(props);
+
+        this.state = { index: 0 };
 
         this.position = new Animated.ValueXY();
 
@@ -40,7 +47,16 @@ class Deck extends Component {
         Animated.timing(this.position, {
             toValue: { x, y: 0 },
             duration: SWIPE_OUT_DURATION
-        }).start();
+        }).start(() => {
+            this.onSwipeComplete(direction);
+        });
+    }
+
+    onSwipeComplete(direction) {
+        const { data, onSwipeLeft, onSwipeRight } = this.props;
+        const item = data[this.state.index];
+
+        direction === "right" ? onSwipeRight() : onSwipeLeft();
     }
 
     getCardStyle() {
