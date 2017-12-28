@@ -14,8 +14,15 @@ class Deck extends Component {
             onPanResponderMove: (evet, gesture) => {
                 this.position.setValue({ x: gesture.dx, y: gesture.dy });
             },
-            onPanResponderRelease: () => {}
+            onPanResponderRelease: () => this.resetPosition()
         });
+    }
+
+    resetPosition() {
+        // reset position
+        Animated.spring(this.position, {
+            toValue: { x: 0, y: 0 }
+        }).start();
     }
 
     getCardStyle() {
