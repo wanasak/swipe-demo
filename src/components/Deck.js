@@ -57,9 +57,13 @@ class Deck extends Component {
         const item = data[this.state.index];
 
         direction === "right" ? onSwipeRight() : onSwipeLeft();
+        
+        this.position.setValue({ x: 0,  y: 0 });
+        this.setState({ index: this.state.index + 1 });
     }
 
     getCardStyle() {
+        // interpolation
         const rotate = this.position.x.interpolate({
             inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
             outputRange: ["-120deg", "0deg", "120deg"]
@@ -72,8 +76,15 @@ class Deck extends Component {
     }
 
     renderCard() {
-        return this.props.data.map((item, index) => {
-            if (index === 0) {
+        if (this.state.index >= this.props.data.length) {
+            return this.props.renderNoMoreCards();
+        }
+
+        return this.props.data.map((item, i) => {
+            // return nul for swiped card
+            if (i < this.state.index) { return null; }
+
+            if (i === this.state.index) {
                 return (
                     <Animated.View
                         key={item.id}

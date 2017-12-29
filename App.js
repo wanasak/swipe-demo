@@ -50,6 +50,17 @@ const DATA = [
 ];
 
 export default class App extends React.Component {
+    renderNoMoreCards() {
+        return (
+            <Card title="All Done!">
+                <Text style={{ marginBottom: 10 }}>
+                    There's no more content here!
+                </Text>
+                <Button title="Get more!" backgroundColor="gray" />
+            </Card>
+        );
+    }
+
     renderCard(item) {
         return (
             <Card
@@ -73,6 +84,7 @@ export default class App extends React.Component {
                 <Deck 
                     data={DATA}
                     renderCard={this.renderCard}
+                    renderNoMoreCards={this.renderNoMoreCards}
                 />
             </View>
         );
